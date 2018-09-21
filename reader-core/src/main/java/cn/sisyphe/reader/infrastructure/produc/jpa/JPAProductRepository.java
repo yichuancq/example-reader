@@ -20,7 +20,6 @@ public interface JPAProductRepository extends JpaRepository<Product, String> {
     @Override
     Product findOne(String s);
 
-
     // 名称查找
     @Cacheable
     List<Product> findByHNameLike(String hName);
@@ -29,7 +28,6 @@ public interface JPAProductRepository extends JpaRepository<Product, String> {
     @Cacheable
     @Query(value = "select A from Product A where  1=1 and A.hName like  %?1% ", nativeQuery = false)
     List<Product> findByNameLike(String name);
-
     /**
      * @param specification
      * @param pageable
