@@ -11,8 +11,7 @@
                 </el-col>
                 <el-col :xs="24" :sm="12" :lg="5" class="margin-top-10">
                     <el-select v-model="params.atName" placeholder="请选择所属区域">
-                        <el-option v-for="item in areaOptions" :key="item.value" :label="item.label"
-                                   :value="item.value">
+                        <el-option v-for="item in areaOptions" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -31,8 +30,7 @@
             <el-table-column prop="hIsbn" label="书号" width="145px" align="center" sortable></el-table-column>
             <el-table-column prop="hName" label="书名" width="315px" align="center" sortable>
                 <template scope="scope">
-                    <el-button @click="handleClick(scope.row)" type="text" size="small"
-                               style="text-decoration: underline;">
+                    <el-button @click="handleClick(scope.row)" type="text" size="small" style="text-decoration: underline;">
                         <strong>{{scope.row.hName}}</strong>
                     </el-button>
                 </template>
@@ -63,18 +61,11 @@
         <!--表格end-->
         <!--分页-->
         <div class="pagination">
-            <el-pagination layout="total, sizes, prev, pager, next, jumper"
-                           :total="page.pageTotal"
-                           :page-size="page.pageSize"
-                           :current-page="page.currentPage"
-                           @current-change="pageChange"
-                           @size-change="sizeChange"
-            ></el-pagination>
+            <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="page.pageTotal" :page-size="page.pageSize" :current-page="page.currentPage" @current-change="pageChange" @size-change="sizeChange"></el-pagination>
         </div>
         <!--分页end-->
         <!--详情弹出层-->
-        <el-dialog :title="productDetails.baseInfo.hName" :visible.sync="dialogTableVisible"
-                   custom-class="custom-dialog">
+        <el-dialog :title="productDetails.baseInfo.hName" :visible.sync="dialogTableVisible" custom-class="custom-dialog">
             <p style="margin-top:10px;"><b>基础信息</b></p>
             <el-form ref="form" :model="productDetails" label-width="100px">
                 <el-row>
@@ -114,96 +105,112 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            isReader: {
-                type: Boolean,
-                default: false
+export default {
+    props: {
+        isReader: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data() {
+        return {
+            params: {
+                hIsbn: "",
+                hName: "",
+                atName: ""
+            },
+            page: {
+                currentPage: 1,
+                pageSize: 50,
+                pageTotal: 0
+            },
+            areaOptions: [
+                { label: "--", value: "" },
+                { label: "新品", value: "新品" },
+                { label: "畅销", value: "畅销" },
+                { label: "常销", value: "常销" },
+                { label: "断货", value: "断货" },
+                { label: "下架", value: "下架" }
+            ],
+            productList: [],
+            gridData: [],
+            dialogTableVisible: false,
+            productDetails: {
+                baseInfo: {},
+                productType: {},
+                stockList: []
+            }
+        };
+    },
+    methods: {
+        search() {
+            this.loadData(this.params, this.page);
+        },
+        reset() {
+            for (let i in this.params) {
+                this.params[i] = "";
             }
         },
-        data() {
-            return {
-                params: {
-                    hIsbn: '',
-                    hName: '',
-                    atName: ''
-                },
-                page: {
-                    currentPage: 1,
-                    pageSize: 50,
-                    pageTotal: 0
-                },
-                areaOptions: [
-                    {label: '--', value: ''},
-                    {label: '新品', value: '新品'},
-                    {label: '畅销', value: '畅销'},
-                    {label: '常销', value: '常销'},
-                    {label: '断货', value: '断货'},
-                    {label: '下架', value: '下架'}
-                ],
-                productList: [],
-                gridData: [],
-                dialogTableVisible: false,
-                productDetails: {
-                    baseInfo: {},
-                    productType: {},
-                    stockList: []
+        loadData(params, page) {
+            let isEmpty = false;
+            for (let key in params) {
+                if (params[key]) {
+                    isEmpty = true;
                 }
-            };
-        },
-        methods: {
-            search(){
-                this.loadData(this.params, this.page);
-            },
-            reset(){
-                for (let i in this.params) {
-                    this.params[i] = '';
-                }
-            },
-            loadData(params, page){
-                let isEmpty = _.find(params, function (item) {
-                    return item !== ''
-                });
-                if (isEmpty) {
-                    let data = _.extend({}, params, page);
-                    this.$http.post('/api/reader/GoodsCirculationController/queryByCondition', data).then((res) => {
-                        if (res.data.code === '000') {
+            }
+            if (isEmpty) {
+                let data = Object.assign({}, params, page);
+                this.$http
+                    .post(
+                        "/api/reader/GoodsCirculationController/queryByCondition",
+                        data
+                    )
+                    .then(res => {
+                        if (res.data.code === "000") {
                             this.page.pageTotal = res.data.result.totalPages;
-                            this.productList = res.data.result.goodsCirculationList;
+                            this.productList =
+                                res.data.result.goodsCirculationList;
                             if (this.productList.length === 0) {
                                 this.$notify({
-                                    title: '提示',
-                                    message: '没有数据',
-                                    type: 'warning',
+                                    title: "提示",
+                                    message: "没有数据",
+                                    type: "warning",
                                     duration: 4000
                                 });
                             }
                         }
                     });
-                } else {
-                    this.$alert('查询条件至少需要填写一个', '提示');
-                }
-            },
-            pageChange(val){
-                this.page.currentPage = val;
-                this.loadData(this.params, this.page);
-            },
-            sizeChange(val){
-                this.page.pageSize = val;
-                this.loadData(this.params, this.page);
-            },
-            handleClick(row) {
-                this.$http.post('/api/reader/productController/showDetailsById?hId=' + row.hId).then((res) => {
-                    if (res.data.code === '000') {
+            } else {
+                this.$alert("查询条件至少需要填写一个", "提示");
+            }
+        },
+        pageChange(val) {
+            this.page.currentPage = val;
+            this.loadData(this.params, this.page);
+        },
+        sizeChange(val) {
+            this.page.pageSize = val;
+            this.loadData(this.params, this.page);
+        },
+        handleClick(row) {
+            this.$http
+                .post(
+                    "/api/reader/productController/showDetailsById?hId=" +
+                        row.hId
+                )
+                .then(res => {
+                    if (res.data.code === "000") {
                         this.productDetails.baseInfo = row;
-                        this.productDetails.productType = res.data.result.productType;
-                        this.productDetails.stockList = res.data.result.stockList;
+                        this.productDetails.productType =
+                            res.data.result.productType;
+                        this.productDetails.stockList =
+                            res.data.result.stockList;
                         console.log(this.productDetails.baseInfo);
 
                         this.dialogTableVisible = true;
                     }
                 });
-            }
         }
     }
+};
 </script>
