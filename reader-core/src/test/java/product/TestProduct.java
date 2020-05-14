@@ -1,15 +1,13 @@
 package product;
 
-import cn.sisyphe.common.exception.DataException;
-import cn.sisyphe.reader.ReaderApplication;
-import cn.sisyphe.reader.domain.product.ProductService;
-import cn.sisyphe.reader.domain.product.model.Product;
-import cn.sisyphe.reader.infrastructure.produc.ProductRepository;
-import cn.sisyphe.reader.infrastructure.produc.jdbc.JdbcProductRepository;
-import cn.sisyphe.reader.viewmodel.ConditionQuery;
-import cn.sisyphe.reader.viewmodel.ProductDTO;
-import cn.sisyphe.reader.viewmodel.ProductTypeDTO;
-import cn.sisyphe.reader.viewmodel.StockDTO;
+import com.example.reader.ReaderApplication;
+import com.example.reader.domain.product.ProductService;
+import com.example.reader.domain.product.model.Product;
+import com.example.reader.infrastructure.produc.jdbc.JdbcProductRepository;
+import com.example.reader.viewmodel.ConditionQuery;
+import com.example.reader.viewmodel.ProductDTO;
+import com.example.reader.viewmodel.ProductTypeDTO;
+import com.example.reader.viewmodel.StockDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -27,29 +25,19 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ReaderApplication.class)
 public class TestProduct {
-
-
     private final static Logger log = LoggerFactory.getLogger(TestProduct.class);
 
     @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
     private JdbcProductRepository jdbcProductRepository;
-
-
     @Autowired
     ProductService productService;
-
 
     @Test
     public void testTypeName() {
 
         String hId = "71153597730099000000";
         ProductTypeDTO productTypeDTO = jdbcProductRepository.queryProductType(hId);
-
         List<StockDTO> stockDTOList = jdbcProductRepository.queryStocks(hId);
-
         System.out.println(productTypeDTO);
         System.out.println(stockDTOList);
 
@@ -82,20 +70,6 @@ public class TestProduct {
 
     }
 
-
-    /**
-     *
-     */
-    @Test
-    public void findByName() {
-
-        List<Product> products = productRepository.findByNameLike("酒店管理实例与问答");
-        for (Product product : products) {
-            // Set<ProductType> children = (Set<ProductType>) product.getProductType();
-            // System.out.println(" size: " + children.size());
-        }
-    }
-
     @Test
     public void testPage() {
 
@@ -105,7 +79,6 @@ public class TestProduct {
         ConditionQuery conditionQuery = new ConditionQuery();
         conditionQuery.setCurrentPage(1);
         conditionQuery.setPageSize(50);
-        //conditionQuery.setIsbn("9787530211175");
         conditionQuery.sethName("酒店");
         try {
 
@@ -115,8 +88,7 @@ public class TestProduct {
             for (Product product : productPage) {
 
             }
-        } catch (DataException e) {
-
+        } catch (Exception e) {
             e.printStackTrace();
         }
         double endTime = System.currentTimeMillis();

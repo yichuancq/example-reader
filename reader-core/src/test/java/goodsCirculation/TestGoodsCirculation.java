@@ -1,11 +1,11 @@
 package goodsCirculation;
 
-import cn.sisyphe.reader.ReaderApplication;
-import cn.sisyphe.reader.domain.goodsCirculation.model.GoodsCirculation;
-import cn.sisyphe.reader.domain.goodsCirculation.model.LastGoodsCirculation;
-import cn.sisyphe.reader.infrastructure.goodsCirculation.jdbc.JdbcGoodsCirculationRepository;
-import cn.sisyphe.reader.utils.YHPasswordUtil;
-import cn.sisyphe.reader.viewmodel.CirculationConditionQuery;
+import com.example.reader.ReaderApplication;
+import com.example.reader.domain.goodsCirculation.model.GoodsCirculation;
+import com.example.reader.domain.goodsCirculation.model.LastGoodsCirculation;
+import com.example.reader.infrastructure.goodsCirculation.jdbc.JdbcGoodsCirculationRepository;
+import com.example.reader.utils.YHPasswordUtil;
+import com.example.reader.viewmodel.CirculationConditionQuery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

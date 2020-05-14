@@ -1,8 +1,8 @@
 package user;
 
-import cn.sisyphe.reader.ReaderApplication;
-import cn.sisyphe.reader.domain.user.UserService;
-import cn.sisyphe.reader.domain.user.model.User;
+import com.example.reader.ReaderApplication;
+import com.example.reader.domain.user.UserService;
+import com.example.reader.domain.user.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

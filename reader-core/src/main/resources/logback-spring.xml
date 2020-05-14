@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- 日志根目录-->
-    <springProperty scope="context" name="LOG_HOME" source="logging.path" defaultValue="d://sisyphe_reader_logs"/>
+    <springProperty scope="context" name="LOG_HOME" source="logging.path" defaultValue="d://example_reader_logs"/>
     <!--<springProperty scope="context" name="LOG_HOME" source="logging.path" defaultValue="/data/logs/spring-boot-logback"/>-->
     <!-- 日志级别 -->
     <springProperty scope="context" name="LOG_ROOT_LEVEL" source="logging.level.root" defaultValue="INFO"/>
