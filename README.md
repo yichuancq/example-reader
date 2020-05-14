@@ -1,4 +1,4 @@
-## cn.sisyphe.reader
+## com.example.reader
 
 
 
